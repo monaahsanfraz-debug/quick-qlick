@@ -4,13 +4,9 @@
 
 **URL**: https://lovable.dev/projects/787dfe92-a835-433b-99cb-3b2d744628c4
 
-## How can I edit this code?
 
-There are several ways of editing your application.
 
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/787dfe92-a835-433b-99cb-3b2d744628c4) and start prompting.
+Simply visit the [Lovable Project](https://lovable.dev/projects/787dfe92-a835-433b-99cb-3b2d744628c4)  
 
 Changes made via Lovable will be committed automatically to this repo.
 
@@ -23,8 +19,7 @@ The only requirement is having Node.js & npm installed - [install with nvm](http
 Follow these steps:
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+
 
 # Step 2: Navigate to the project directory.
 cd <YOUR_PROJECT_NAME>
