@@ -84,6 +84,12 @@ export default {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "float-up": "float-up 2s ease-out forwards",
+        "heart-beat": "heart-beat 0.6s ease-in-out",
+        "bounce-gentle": "bounce-gentle 2s infinite",
+        "rotate-disc": "rotate-disc 3s linear infinite",
+        "slide-up": "slide-up 0.3s ease-out",
+        "fade-in": "fade-in 0.3s ease-out",
       },
     },
   },
