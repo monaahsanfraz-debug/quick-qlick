@@ -3,6 +3,10 @@ import { VideoFeed } from "./VideoFeed";
 import { BottomNavigation } from "./BottomNavigation";
 import { CommentModal } from "./CommentModal";
 import { UploadModal } from "./UploadModal";
+import { ProfilePage } from "./ProfilePage";
+import { DiscoverPage } from "./DiscoverPage";
+import { InboxPage } from "./InboxPage";
+import { SearchResults } from "./SearchResults";
 import { Video } from "./VideoReel";
 import { mockVideos, mockComments, Comment } from "@/data/mockData";
 import { useToast } from "@/hooks/use-toast";
@@ -14,7 +18,33 @@ export const VideoSocialApp = () => {
   const [selectedVideoId, setSelectedVideoId] = useState<string | null>(null);
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showSearch, setShowSearch] = useState(false);
   const { toast } = useToast();
+
+  // Current user data
+  const currentUser = {
+    id: "current_user",
+    username: "you",
+    displayName: "Your Name",
+    avatar: "👤",
+    bio: "Living my best life 🌟 Creating content daily!",
+    website: "https://example.com",
+    location: "New York, NY",
+    joinDate: "January 2023",
+    verified: false
+  };
+
+  // Mock user stats
+  const userStats = {
+    followers: 1245,
+    following: 892,
+    totalLikes: 15678
+  };
+
+  // Filter user's videos and liked videos
+  const userVideos = videos.filter(video => video.user.id === currentUser.id);
+  const likedVideos = videos.filter(video => video.isLiked);
 
   const handleLike = (videoId: string) => {
     setVideos(prevVideos =>
@@ -122,34 +152,61 @@ export const VideoSocialApp = () => {
       return;
     }
     
-    if (tab === "discover") {
-      toast({
-        description: "Discover page coming soon! 🚀",
-      });
-      return;
-    }
-    
-    if (tab === "inbox") {
-      toast({
-        description: "Inbox feature coming soon! 💬",
-      });
-      return;
-    }
-    
-    if (tab === "profile") {
-      toast({
-        description: "Profile page coming soon! 👤",
-      });
-      return;
-    }
-
     setActiveTab(tab);
+    setShowSearch(false);
+  };
+
+  const handleVideoSelect = (video: Video) => {
+    // Switch to home tab and play selected video
+    setActiveTab("home");
+    setShowSearch(false);
+    toast({
+      description: `Playing video by @${video.user.username}`,
+    });
+  };
+
+  const handleUserClick = (username: string) => {
+    toast({
+      description: `Viewing @${username}'s profile`,
+    });
+  };
+
+  const handleHashtagClick = (hashtag: string) => {
+    setSearchQuery(`#${hashtag}`);
+    setShowSearch(true);
+  };
+
+  const handleSoundClick = (soundId: string) => {
+    toast({
+      description: "Sound details coming soon!",
+    });
+  };
+
+  const handleMessageClick = (messageId: string) => {
+    toast({
+      description: "Opening conversation...",
+    });
+  };
+
+  const handleProfileUpdate = (updates: any) => {
+    toast({
+      description: "Profile updated successfully!",
+    });
   };
 
   return (
-    <div className="h-screen bg-black overflow-hidden">
+    <div className="h-screen bg-background overflow-hidden">
       {/* Main Content */}
-      {activeTab === "home" && (
+      {showSearch ? (
+        <SearchResults
+          query={searchQuery}
+          onQueryChange={setSearchQuery}
+          onVideoSelect={handleVideoSelect}
+          onUserClick={handleUserClick}
+          onHashtagClick={handleHashtagClick}
+          onSoundClick={handleSoundClick}
+        />
+      ) : activeTab === "home" ? (
         <VideoFeed
           videos={videos}
           onLike={handleLike}
@@ -157,7 +214,29 @@ export const VideoSocialApp = () => {
           onShare={handleShare}
           onFollow={handleFollow}
         />
-      )}
+      ) : activeTab === "discover" ? (
+        <DiscoverPage
+          onVideoSelect={handleVideoSelect}
+          onHashtagClick={handleHashtagClick}
+          onUserClick={handleUserClick}
+        />
+      ) : activeTab === "inbox" ? (
+        <InboxPage
+          onMessageClick={handleMessageClick}
+          onUserClick={handleUserClick}
+        />
+      ) : activeTab === "profile" ? (
+        <ProfilePage
+          currentUser={currentUser}
+          userVideos={userVideos}
+          likedVideos={likedVideos}
+          followers={userStats.followers}
+          following={userStats.following}
+          totalLikes={userStats.totalLikes}
+          onVideoSelect={handleVideoSelect}
+          onProfileUpdate={handleProfileUpdate}
+        />
+      ) : null}
 
       {/* Bottom Navigation */}
       <BottomNavigation
